@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="alert alert-success" role="alert">管理认证成功</div>
+    {#面板开始#}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">专业管理</h3>
+        </div>
+
+            <!-- 添加模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {#面板开始#}
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">添加专业</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="form-group">
+
+                                    <label class="control-label" for="name">专业名称</label>
+                                    <input type="text" class="form-control" placeholder="请输入专业名称" id="majorInput">
+                                </div>
+                            </div>
+                        </div>
+                        {#面板结束#}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="add_submit_model">
+                            提交更改
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /添加模态框结束 -->
+        <script>
+            $('#myModal').on('click','#add_submit_model',function(){
+                $add_major_name=$('#majorInput').val().trim()
+                {#alert($add_major_name)#}
+                if ($add_major_name){
+                    $.post('/add_major/',{'add_major_name':$add_major_name},function (ret) {
+                        alert(ret)
+                    })
+
+                }
+                $('#myModal1').modal('toggle')
+                window.location.reload(true)
+            })
+        </script>
+
+
+
+
+
+        <div class="panel-body">
+            <!--数据表开始-->
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Go!</button>
+                            </span>
+                    </div><!-- /input-group -->
+                </div>
+
+
+                <a href="#" class="btn btn-success  col-lg-offset-6 col-lg-1" data-toggle="modal"
+                            data-target="#myModal">
+                    添加
+                </a>
+            </div>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>专业</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for major in major_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ major.name }}</td>
+                            <td>
+                                <span class="hidden">{{ major.id }}</span>
+                                <a href="/edit_major?edit_id={{ major.id }}" class="btn btn-info">编辑</a>
+                                <a href="/delete_major?delete_id={{ major.id }}" class="btn btn-danger">
+                                    删除
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <!--面板底部开始-->
+            <div class="panel-footer">
+                <!--分页-->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pull-right">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    {#    侧边栏控制#}
+    <script>
+        $('.nav-sidebar li').siblings().removeClass('active')
+        $('.nav-sidebar li').eq(11).addClass('active')
+    </script>
+{% endblock content %}
+

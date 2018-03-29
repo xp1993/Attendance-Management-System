@@ -29,5 +29,7 @@ urlpatterns = [
     url(r'^edit_class',views.edit_class),
     url(r'^delete_class',views.delete_class),
     url(r'^add_class/',views.add_class),
-
+    url(r'^majorManage/',views.majorManage),
+    url(r'^add_major/',views.add_major),
+    url(r'^delete_major',views.delete_major)
 ]
