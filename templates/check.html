@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    {#巨幕开始#}
+    <div class="jumbotron">
+
+      <h2>Hello,{{ user.username }}</h2>
+      <p>今天又是全新的一天，我想你今天已经有了自己的计划，加油</p>
+    </div>
+    {#巨幕结束#}
+
+
+{#面板开始#}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">签到</h3>
+      </div>
+
+      <div class="panel-body">
+        Panel content
+      </div>
+    </div>
+{#面板结束#}
+
+
+
+
+
+
+
+
+
+    <script>
+    $('.nav-sidebar li').siblings().removeClass('active')
+    $('.nav-sidebar li').eq(0).addClass('active')
+    </script>
+{% endblock content %}

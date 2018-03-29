@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+</head>
+<body>
+<div class="page-header">
+    <h1>考勤管理系统
+        <small>成员信息注册</small>
+    </h1>
+</div>
+<div class="row">
+    <div class="panel panel-primary">
+        <!--表单开始-->
+        <div class="panel-heading">
+            <h3 class="panel-title">成员信息注册</h3>
+        </div>
+        <div class="panel-body">
+            <form id="defaultForm" role="form" class="form-signin form-horizontal" action="/register/"
+                  method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="stu_num" class="col-sm-4 control-label">学号：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="stu_num" id="stu_num"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="username" class="col-sm-4 control-label">用户名：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="username" id="username"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-4 control-label">密码：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="password" name="password" id="password"/>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="repassword" class="col-sm-4 control-label">确认密码：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="password" name="repassword" id="repassword"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="col-sm-4 control-label">手机号码：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control " type="text" name="phone" id="phone"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-4 control-label">email:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="email" name="email" id="email"/>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-4">
+                        <button class="btn btn-lg btn-primary pull-right" type="submit">确认注册</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--表单结束-->
+</div>
+
+<script src="/static/js/register.js"></script>
+</body>
+</html>

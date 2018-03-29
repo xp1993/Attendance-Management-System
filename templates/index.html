@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>逼乎，发现更高逼格的自己</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        #my-jumbotron{
+            height: 500px;
+        }
+        .hh{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="jumbotron" id="my-jumbotron">
+
+    <div class="container hh">
+        <a href="{% url 'register' %}" class="btn btn-primary btn-sm pull-right" role="button">
+                注册</a>
+        <div class='row hh'>
+            <h1 class='text-center col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4'>逼乎</h1>
+        </div>
+        <div class='row hh'>
+            <p class='text-center col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4'>遇见更高逼格的自己</p>
+        </div>
+        <div class="row hh">
+            <p class='text-center col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4'><a href="{% url 'login'  %}" class="btn btn-primary btn-lg" role="button">
+                登录逼乎</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
