@@ -217,3 +217,25 @@ def delete_major(request):
             return render(request, 'major_manage_denied.html')
     else:
         return render(request, 'page-login.html', {'error_msg': ''})
+
+#编辑专业
+@csrf_exempt
+def edit_major(request):
+    (flag, rank) = check_cookie(request)
+    if flag:
+        if rank.user_type.caption == 'admin':
+            major_list = MajorInfo.objects.all()
+            edit_major_id=request.POST.get('edit_major_id')
+            edit_major_name=request.POST.get('edit_major_name')
+            print(edit_major_id)
+            print(edit_major_name)
+            if not MajorInfo.objects.filter(name=edit_major_name):
+                change_obj=MajorInfo.objects.get(id=edit_major_id)
+                change_obj.name=edit_major_name
+                change_obj.save()
+            return HttpResponse('专业修改成功')
+
+        else:
+            return render(request, 'major_manage_denied.html')
+    else:
+        return render(request, 'page-login.html', {'error_msg': ''})

@@ -68,7 +68,7 @@
                 <li><a href="/memberManage/">成员管理</a></li>
                 <li><a href="/classManage/">班级管理</a></li>
                 <li><a href="/majorManage/">专业管理</a></li>
-                <li><a href="#">考勤数据设置</a></li>
+                <li ><a href="#">考勤数据设置</a></li>
                 <li><a href="#">签到设置</a></li>
                 <li><a href="#">考核管理</a></li>
 
@@ -90,6 +90,9 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-
+    <script>
+        $('.nav-sidebar li').siblings().removeClass('active')
+        $('.nav-sidebar li').eq({% block sidebar %}{% endblock  %}).addClass('active')
+    </script>
 </body>
 </html>

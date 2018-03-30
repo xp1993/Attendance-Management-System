@@ -208,9 +208,9 @@
 
 
 
-    {#    侧边栏控制#}
-    <script>
-        $('.nav-sidebar li').siblings().removeClass('active')
-        $('.nav-sidebar li').eq(10).addClass('active')
-    </script>
 {% endblock content %}
+
+{#侧边栏#}
+{% block sidebar %}
+    10
+{% endblock sidebar %}

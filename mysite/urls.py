@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^add_class/',views.add_class),
     url(r'^majorManage/',views.majorManage),
     url(r'^add_major/',views.add_major),
-    url(r'^delete_major',views.delete_major)
+    url(r'^delete_major',views.delete_major),
+    url(r'^edit_major/',views.edit_major)
 ]

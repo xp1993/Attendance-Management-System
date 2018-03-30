@@ -46,6 +46,48 @@
             <!-- /.modal-content -->
         </div>
         <!-- /添加模态框结束 -->
+
+
+        <!-- 编辑模态框（Modal） -->
+        <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {#面板开始#}
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">添加专业</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <input type="text" class="hidden" name="edit_major_id" id="edit_major_id_input">
+                                    <label class="control-label" for="name">专业名称</label>
+                                    <input type="text" class="form-control" name="edit_major_name" placeholder="请输入专业名称" id="major_input">
+                                </div>
+                            </div>
+                        </div>
+                        {#面板结束#}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="edit_submit_model">
+                            提交更改
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /编辑模态框结束 -->
+
         <script>
             $('#myModal').on('click','#add_submit_model',function(){
                 $add_major_name=$('#majorInput').val().trim()
@@ -59,6 +101,22 @@
                 $('#myModal1').modal('toggle')
                 window.location.reload(true)
             })
+            $('#edit_modal').on('click','#edit_submit_model',function(){
+                $edit_major_name=$('#edit_modal #major_input').val()
+                $edit_major_id=$('#edit_modal #edit_major_id_input').val()
+                {#alert($edit_major_id)#}
+                if ($edit_major_name) {
+                    $.post('/edit_major/', {'edit_major_id': $edit_major_id, 'edit_major_name': $edit_major_name},
+                        function (ret) {
+                            alert(ret)
+                        }
+                    )
+                }
+                $('#edit_modal').modal('toggle')
+                window.location.reload(true)
+            })
+
+
         </script>
 
 
@@ -101,7 +159,8 @@
                             <td>{{ major.name }}</td>
                             <td>
                                 <span class="hidden">{{ major.id }}</span>
-                                <a href="/edit_major?edit_id={{ major.id }}" class="btn btn-info">编辑</a>
+                                <a href="#" class="btn btn-info"  data-toggle="modal"
+                            data-target="#edit_modal" id="edit_btn">编辑</a>
                                 <a href="/delete_major?delete_id={{ major.id }}" class="btn btn-danger">
                                     删除
                                 </a>
@@ -113,6 +172,14 @@
                     </tbody>
                 </table>
             </div>
+
+            <script>
+                $('table').on('click','#edit_btn',function () {
+                    $('#edit_modal #edit_major_id_input').val($(this).prev().text())
+                    $('#edit_modal #major_input').val($(this).parent().prev().text())
+                })
+
+            </script>
             <!--面板底部开始-->
             <div class="panel-footer">
                 <!--分页-->
@@ -143,10 +210,8 @@
 
 
 
-    {#    侧边栏控制#}
-    <script>
-        $('.nav-sidebar li').siblings().removeClass('active')
-        $('.nav-sidebar li').eq(11).addClass('active')
-    </script>
-{% endblock content %}
 
+{% endblock content %}
+{% block sidebar %}
+    11
+{% endblock sidebar %}
