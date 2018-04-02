@@ -78,7 +78,7 @@ def logout(request):
     return req
 
 
-# 登录验证
+# 注册验证
 def register_verify(request):
     if request.method == 'POST':
         print('验证成功')
@@ -86,9 +86,13 @@ def register_verify(request):
         email = request.POST.get('email')
         stu_num = request.POST.get('stu_num')
         pwd = request.POST.get('password')
+        m1 = hashlib.sha1()
+        m1.update(pwd.encode('utf8'))
+        pwd = m1.hexdigest()
         phone = request.POST.get('phone')
         a = UserInfo.objects.create(username=username, email=email, studentNum=stu_num, password=pwd,
-                                    phone=phone)
+                                    phone=phone, user_type_id=2)
+
         a.save()
         return HttpResponse('OK')
 
@@ -239,3 +243,7 @@ def edit_major(request):
             return render(request, 'major_manage_denied.html')
     else:
         return render(request, 'page-login.html', {'error_msg': ''})
+
+
+def member_manage(request):
+    pass

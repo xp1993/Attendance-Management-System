@@ -7,7 +7,7 @@
             <h3 class="panel-title">专业管理</h3>
         </div>
 
-            <!-- 添加模态框（Modal） -->
+        <!-- 添加模态框（Modal） -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -69,7 +69,8 @@
                                 <div class="form-group">
                                     <input type="text" class="hidden" name="edit_major_id" id="edit_major_id_input">
                                     <label class="control-label" for="name">专业名称</label>
-                                    <input type="text" class="form-control" name="edit_major_name" placeholder="请输入专业名称" id="major_input">
+                                    <input type="text" class="form-control" name="edit_major_name" placeholder="请输入专业名称"
+                                           id="major_input">
                                 </div>
                             </div>
                         </div>
@@ -89,11 +90,11 @@
         <!-- /编辑模态框结束 -->
 
         <script>
-            $('#myModal').on('click','#add_submit_model',function(){
-                $add_major_name=$('#majorInput').val().trim()
+            $('#myModal').on('click', '#add_submit_model', function () {
+                $add_major_name = $('#majorInput').val().trim()
                 {#alert($add_major_name)#}
-                if ($add_major_name){
-                    $.post('/add_major/',{'add_major_name':$add_major_name},function (ret) {
+                if ($add_major_name) {
+                    $.post('/add_major/', {'add_major_name': $add_major_name}, function (ret) {
                         alert(ret)
                     })
 
@@ -101,9 +102,9 @@
                 $('#myModal1').modal('toggle')
                 window.location.reload(true)
             })
-            $('#edit_modal').on('click','#edit_submit_model',function(){
-                $edit_major_name=$('#edit_modal #major_input').val()
-                $edit_major_id=$('#edit_modal #edit_major_id_input').val()
+            $('#edit_modal').on('click', '#edit_submit_model', function () {
+                $edit_major_name = $('#edit_modal #major_input').val()
+                $edit_major_id = $('#edit_modal #edit_major_id_input').val()
                 {#alert($edit_major_id)#}
                 if ($edit_major_name) {
                     $.post('/edit_major/', {'edit_major_id': $edit_major_id, 'edit_major_name': $edit_major_name},
@@ -118,9 +119,6 @@
 
 
         </script>
-
-
-
 
 
         <div class="panel-body">
@@ -138,7 +136,7 @@
 
 
                 <a href="#" class="btn btn-success  col-lg-offset-6 col-lg-1" data-toggle="modal"
-                            data-target="#myModal">
+                   data-target="#myModal">
                     添加
                 </a>
             </div>
@@ -159,8 +157,8 @@
                             <td>{{ major.name }}</td>
                             <td>
                                 <span class="hidden">{{ major.id }}</span>
-                                <a href="#" class="btn btn-info"  data-toggle="modal"
-                            data-target="#edit_modal" id="edit_btn">编辑</a>
+                                <a href="#" class="btn btn-info" data-toggle="modal"
+                                   data-target="#edit_modal" id="edit_btn">编辑</a>
                                 <a href="/delete_major?delete_id={{ major.id }}" class="btn btn-danger">
                                     删除
                                 </a>
@@ -174,7 +172,7 @@
             </div>
 
             <script>
-                $('table').on('click','#edit_btn',function () {
+                $('table').on('click', '#edit_btn', function () {
                     $('#edit_modal #edit_major_id_input').val($(this).prev().text())
                     $('#edit_modal #major_input').val($(this).parent().prev().text())
                 })
