@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="alert alert-success" role="alert">管理认证成功</div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">成员管理</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="/edit_member/" method="post">
+                {% csrf_token %}
+                {#            姓名#}
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">姓名</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="username" id="inputName"
+                               value="{{ edit_stu_obj.username }}"
+                               placeholder="{{ edit_stu_obj.username }}">
+                    </div>
+                </div>
+                {#            Email#}
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-8">
+                        <input type="email" class="form-control" name="email" id="inputEmail"
+                               value="{{ edit_stu_obj.email }}"
+                               placeholder="{{ edit_stu_obj.email }}">
+                    </div>
+                </div>
+                {#            密码#}
+                {#                <div class="form-group">#}
+                {#                    <label for="inputPassword3" class="col-sm-2 control-label">密码</label>#}
+                {#                    <div class="col-sm-8">#}
+                {#                        <input type="password" class="form-control" id="inputPassword3" placeholder="Password">#}
+                {#                    </div>#}
+                {#                </div>#}
+                {#            学号#}
+                <div class="form-group">
+                    <label for="inputSno" class="col-sm-2 control-label">学号</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputSno" name="student_num"
+                               value="{{ edit_stu_obj.studentNum }}"
+                               placeholder="{{ edit_stu_obj.studentNum }}">
+                    </div>
+                </div>
+                {#            班级#}
+                <div class="form-group">
+                    <label for="selectClass" class="col-sm-2 control-label">班级</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="selectClass" name="cls">
+                            {% for cls in cls_list %}
+                                {% ifequal cls.name edit_stu_obj.cid.name %}
+                                    <option value="{{ cls.name }}" selected>{{ cls.name }}</option>
+                                {% else %}
+                                    <option value="{{ cls.name }}">{{ cls.name }}</option>
+                                {% endifequal %}
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {#            昵称#}
+                <div class="form-group">
+                    <label for="inputNickname" class="col-sm-2 control-label">昵称</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="nickname" class="form-control" id="inputNickname"
+                               placeholder="nickname">
+                    </div>
+                </div>
+                {#            专业#}
+                {#                <div class="form-group">#}
+                {#                    <label for="selectMajor" class="col-sm-2 control-label">专业</label>#}
+                {#                    <div class="col-sm-8">#}
+                {#                        <select class="form-control" id="selectClass" name="major">#}
+                {#                            {% for major in major_list %}#}
+                {#                                <option value="{{ major.name }}">{{ major.name }}</option>#}
+                {#                            {% endfor %}#}
+                {#                        </select>#}
+                {#                    </div>#}
+                {#                </div>#}
+                {#            用户类型#}
+                <div class="form-group">
+                    <label for="selectType" class="col-sm-2 control-label">用户类型</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="selectClass" name="user_type">
+                            {% for type in stu_type_list %}
+                                {% ifequal type.caption 'student' %}
+                                    <option value="{{ type.caption }}" selected>{{ type.caption }}</option>
+                                {% else %}
+                                    <option value="{{ type.caption }}">{{ type.caption }}</option>
+                                {% endifequal %}
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {#            性别#}
+                <div class="form-group">
+                    <label for="gender" class="col-sm-2 control-label">性别</label>
+                    <div class="col-sm-8">
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" id="gender" value="1" checked> 男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" id="gender" value="0"> 女
+                        </label>
+                    </div>
+                </div>
+                            {#            年龄#}
+                <div class="form-group">
+                    <label for="inputAge" class="col-sm-2 control-label">年龄</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="age" id="inputAge"
+
+                               placeholder="age">
+                    </div>
+                </div>
+                {#            电话#}
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">联系方式</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="phone" class="form-control" id="inputName"
+                               value="{{ edit_stu_obj.phone }}"
+                               placeholder="{{ edit_stu_obj.phone }}">
+                    </div>
+                </div>
+                {#            人生格言#}
+                <div class="form-group">
+                    <label for="selectMotto" class="col-sm-2 control-label">人生格言</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="3" id="selectMotto" name="motto"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <button type="submit" class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+
+
+
+{% endblock content %}
+
+{% block sidebar %}
+    9
+{% endblock sidebar %}

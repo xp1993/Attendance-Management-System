@@ -40,7 +40,6 @@ class UserInfo(models.Model):
     phone = models.CharField(max_length=11)
     motto = models.TextField(null=True)
     email = models.EmailField(null=False)
-    userImg = models.ImageField(null=True)
 
     def __repr__(self):
         return self.username
