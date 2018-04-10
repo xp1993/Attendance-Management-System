@@ -2,12 +2,13 @@ from django.shortcuts import render, HttpResponse, redirect
 from .forms import loginForm
 from django.contrib.auth import authenticate, login
 from .api import check_cookie,check_login, get_all_major, get_all_class, get_all_type
-from .models import MajorInfo, UserType, UserInfo, ClassInfo
+from .models import MajorInfo, UserType, UserInfo, ClassInfo,Attendence
 # django自带加密解密库
 from django.views.decorators.csrf import csrf_exempt
 import hashlib
 import json
-
+from datetime import datetime
+import pytz
 
 # Create your views here.
 
@@ -24,9 +25,17 @@ import json
 
 # 首页
 def index(request):
-    return render(request, 'manage.html')
-
-
+    return  redirect('/check/')
+    # (flag, rank) = check_cookie(request)
+    # print('flag', flag)
+    #
+    # if flag:
+    #     return render(request, 'check.html',locals())
+    #
+    # return render(request, 'page-login.html', {'error_msg': ''})
+# 签到统计
+def total(request):
+    return  render(request,'manage.html')
 # 登录页面
 @csrf_exempt
 def login(request):
@@ -75,8 +84,26 @@ def register(request):
 def check(request):
     (flag, rank) = check_cookie(request)
     print('flag', flag)
+    user=rank
+
     if flag:
-        return render(request, 'check.html', {'user': rank})
+        if request.method=='POST':
+
+            pass
+        else:
+            # 查询上一个签到的状态
+            pre_att=Attendence.objects.filter(stu=user).order_by('cur_time').last()
+            if pre_att:
+                if (datetime.now()-pre_att.cur_time.replace(tzinfo=None)).seconds/3600>6:
+                    Attendence.objects.create(stu=user,state=False)
+                    sign_flag=False
+                else:
+                    sign_flag = not pre_att.state
+            else:
+                sign_flag=True
+            att_list=Attendence.objects.all()
+
+            return render(request, 'check.html',locals())
 
     return render(request, 'page-login.html', {'error_msg': ''})
 

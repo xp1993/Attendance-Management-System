@@ -41,18 +41,16 @@ class UserInfo(models.Model):
     motto = models.TextField(null=True)
     email = models.EmailField(null=False)
 
-    def __repr__(self):
+    def __str__(self):
         return self.username
 
 
 class Attendence(models.Model):
-    studentNum = models.ForeignKey('UserInfo')
-    day = models.DateField(timezone.now())
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    date = models.DateField(auto_now=True)
+    stu = models.ForeignKey('UserInfo')
+    cur_time = models.DateTimeField(auto_now=True)
+    date=models.DateField(auto_now=True)
+    state=models.BooleanField(default=False)
     is_leave = models.BooleanField(default=False)
-    detail = models.TextField()
-
-    def __repr__(self):
-        return self.studentNum
+    detail = models.TextField(default='无')
+    def __str__(self):
+        return self.stu.username

@@ -3,23 +3,114 @@
     {#巨幕开始#}
     <div class="jumbotron">
 
-      <h2>Hello,{{ user.username }}</h2>
-      <p>今天又是全新的一天，我想你今天已经有了自己的计划，加油</p>
+        <h2>Hello,{{ user.username }}</h2>
+        <div class="row">
+            <div class="col-md-10">
+                <p>今天又是全新的一天，我想你今天已经有了自己的计划，加油</p>
+            </div>
+            <div class="col-md-2">
+                <object id="honehoneclock" width="160" height="70" align="middle"
+                        codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"
+                        classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
+                    <param value="always" name="allowScriptAccess">
+                    <param value="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.swf"
+                           name="movie">
+                    <param value="high" name="quality">
+                    <param value="#ffffff" name="bgcolor">
+                    <param value="transparent" name="wmode">
+                    <embed width="160" height="70" align="middle"
+                           pluginspage="http://www.macromedia.com/go/getflashplayer"
+                           type="application/x-shockwave-flash" allowscriptaccess="always" name="honehoneclock"
+                           bgcolor="#ffffff" quality="high"
+                           src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.swf"
+                           wmode="transparent">
+                </object>
+            </div>
+        </div>
+
     </div>
     {#巨幕结束#}
+    <div class="row">
+        <div class="col-sm-4">
+            <object type="application/x-shockwave-flash" style="outline:none;"
+                    data="http://cdn.abowman.com/widgets/hamster/hamster.swf?up_bodyColor=f0e9cc&amp;up_feetColor=D4C898&amp;up_eyeColor=000567&amp;up_wheelSpokeColor=DEDEDE&amp;up_wheelColor=FFFFFF&amp;up_waterColor=E0EFFF&amp;up_earColor=b0c4de&amp;up_wheelOuterColor=FF4D4D&amp;up_snoutColor=F7F4E9&amp;up_bgColor=F0E4E4&amp;up_foodColor=cba920&amp;up_wheelCenterColor=E4EB2F&amp;up_tailColor=E6DEBE&amp;"
+                    width="200" height="160">
+                <param name="movie"
+                       value="http://cdn.abowman.com/widgets/hamster/hamster.swf?up_bodyColor=f0e9cc&amp;up_feetColor=D4C898&amp;up_eyeColor=000567&amp;up_wheelSpokeColor=DEDEDE&amp;up_wheelColor=FFFFFF&amp;up_waterColor=E0EFFF&amp;up_earColor=b0c4de&amp;up_wheelOuterColor=FF4D4D&amp;up_snoutColor=F7F4E9&amp;up_bgColor=F0E4E4&amp;up_foodColor=cba920&amp;up_wheelCenterColor=E4EB2E&amp;up_tailColor=E6DEBE&amp;">
+                <param name="AllowScriptAccess" value="always">
+                <param name="wmode" value="opaque">
+            </object>
+        </div>
 
+        <div class="col-sm-3 col-md-offset-5">
+            <object type="application/x-shockwave-flash" style="outline:none;"
+                    data="http://cdn.abowman.com/widgets/hamster/hamster.swf?up_bodyColor=000000&amp;up_feetColor=D4B898&amp;up_eyeColor=FFFFFF&amp;up_wheelSpokeColor=000000&amp;up_wheelColor=FFFFFF&amp;up_waterColor=66CDAA&amp;up_earColor=FFFFFF&amp;up_wheelOuterColor=000000&amp;up_snoutColor=FFFFFF&amp;up_bgColor=F5DEB3&amp;up_foodColor=000000&amp;up_wheelCenterColor=000000&amp;up_tailColor=FFFFFF&amp;"
+                    width="200" height="160">
+                <param name="movie"
+                       value="http://cdn.abowman.com/widgets/hamster/hamster.swf?up_bodyColor=f0e9cc&amp;up_feetColor=D4C898&amp;up_eyeColor=000567&amp;up_wheelSpokeColor=DEDEDE&amp;up_wheelColor=FFFFFF&amp;up_waterColor=E0EFFF&amp;up_earColor=b0c4de&amp;up_wheelOuterColor=FF4D4D&amp;up_snoutColor=F7F4E9&amp;up_bgColor=F0E4E4&amp;up_foodColor=cba920&amp;up_wheelCenterColor=E4EB2E&amp;up_tailColor=E6DEBE&amp;">
+                <param name="AllowScriptAccess" value="always">
+                <param name="wmode" value="opaque">
+            </object>
+        </div>
 
-{#面板开始#}
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">签到</h3>
-      </div>
-
-      <div class="panel-body">
-        Panel content
-      </div>
     </div>
-{#面板结束#}
+    {#面板开始#}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">签到记录</h3>
+
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <button class="btn btn-success btn-lg  col-md-offset-10" id="sign_btn">
+                    {% ifequal sign_flag True %}
+                        签到
+                    {% else %}
+                        签退
+                    {% endifequal %}
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>时间</th>
+                        <th>时长</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for att in att_list %}
+                            <tr>
+                                <td>{{ att.stu.studentNum }}</td>
+                                <td>{{ att.stu.username }}</td>
+                                <td>{{ att.cur_time }}</td>
+
+                                    {% ifequal att.state True %}
+                                        <td></td>
+                                        <td>
+                                        签到
+                                        </td>
+                                        {% else %}
+                                        <td>{{ pre_att.cur_time|timeuntil:att.cur_time }}</td>
+                                        <td>
+                                        签退
+                                        </td>
+                                    {% endifequal %}
+
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {#面板结束#}
 
 
 

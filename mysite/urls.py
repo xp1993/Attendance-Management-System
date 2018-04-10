@@ -35,6 +35,8 @@ urlpatterns = [
     url(r'^edit_major/',views.edit_major),
     url(r'^memberManage/',views.member_manage),
     url(r'^delete_member',views.delete_member),
-    url(r'^edit_member',views.edit_member)
+    url(r'^edit_member',views.edit_member),
+    url(r'^total',views.total),
+    url(r'^sign_solve/',views.total),
 
 ]
