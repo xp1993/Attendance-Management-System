@@ -47,9 +47,11 @@ class UserInfo(models.Model):
 
 class Attendence(models.Model):
     stu = models.ForeignKey('UserInfo')
-    cur_time = models.DateTimeField(auto_now=True)
+    # cur_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField(null=True,blank=True)
+    end_time = models.DateTimeField(null=True,blank=True)
     date=models.DateField(auto_now=True)
-    state=models.BooleanField(default=False)
+    # state=models.BooleanField(default=False)
     is_leave = models.BooleanField(default=False)
     detail = models.TextField(default='无')
     def __str__(self):

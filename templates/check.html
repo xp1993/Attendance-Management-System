@@ -78,40 +78,45 @@
                     <tr>
                         <th>学号</th>
                         <th>姓名</th>
-                        <th>时间</th>
+                        <th>签到时间</th>
+                        <th>签退时间</th>
                         <th>时长</th>
-                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                        {% for att in att_list %}
-                            <tr>
-                                <td>{{ att.stu.studentNum }}</td>
-                                <td>{{ att.stu.username }}</td>
-                                <td>{{ att.cur_time }}</td>
+                    {% for att in att_list %}
+                        <tr>
+                            <td>{{ att.stu.studentNum }}</td>
+                            <td>{{ att.stu.username }}</td>
+                            <td>{{ att.start_time }}</td>
+                            <td>{{ att.end_time }}</td>
+                            {% ifequal att.end_time None %}
+                                <td></td>
+                            {% else %}
+                                <td>{{ att.start_time | timesince:att.end_time }}</td>
+                            {% endifequal %}
 
-                                    {% ifequal att.state True %}
-                                        <td></td>
-                                        <td>
-                                        签到
-                                        </td>
-                                        {% else %}
-                                        <td>{{ pre_att.cur_time|timeuntil:att.cur_time }}</td>
-                                        <td>
-                                        签退
-                                        </td>
-                                    {% endifequal %}
+                        </tr>
 
-                            </tr>
-                        {% endfor %}
-
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     {#面板结束#}
+    <script>
+        $('.panel-body').on('click', '#sign_btn', function () {
+            $.post('/check/', {'sign':"{{ sign_flag }}"}, function (ret) {
+                window.location.reload(true)
+                alert('操作成功')
+            })
 
+        })
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+        });
+    </script>
 
 
 

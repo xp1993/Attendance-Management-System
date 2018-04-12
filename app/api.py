@@ -1,6 +1,6 @@
 from .models import UserInfo,MajorInfo,ClassInfo,UserType
-
-
+from functools import wraps
+from django.shortcuts import render
 def check_cookie(request):
     d = request.COOKIES.keys()
     if "qwer" in d and "asdf" in d:
@@ -13,6 +13,17 @@ def check_cookie(request):
             return (True, select_user[0])
     else:
         return (False, -1)
+
+
+def is_login(func):
+    @wraps(func)
+    def inner(request, *args, **kwargs):
+        (flag, rank) = check_cookie(request)
+        if flag:
+            return func(request, *args, **kwargs)
+        else:
+            return render(request, 'page-login.html', {'error_msg': ''})
+    return inner
 
 
 def check_login(email, password):

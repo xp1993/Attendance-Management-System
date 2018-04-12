@@ -1,13 +1,15 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .forms import loginForm
 from django.contrib.auth import authenticate, login
-from .api import check_cookie,check_login, get_all_major, get_all_class, get_all_type
+from .api import check_cookie,check_login, get_all_major, get_all_class, get_all_type,is_login
 from .models import MajorInfo, UserType, UserInfo, ClassInfo,Attendence
 # django自带加密解密库
 from django.views.decorators.csrf import csrf_exempt
+from  django.db.models import F,Q,Avg,Sum,Max,Min
+
 import hashlib
 import json
-from datetime import datetime
+import datetime
 import pytz
 
 # Create your views here.
@@ -34,8 +36,24 @@ def index(request):
     #
     # return render(request, 'page-login.html', {'error_msg': ''})
 # 签到统计
+
+@is_login
 def total(request):
-    return  render(request,'manage.html')
+    (flag, user) = check_cookie(request)
+    # if flag:
+    if request.method=='POST':
+        pass
+    else:
+
+        info_list=Attendence.objects.all()
+        sum_time=datetime.timedelta(hours=0)
+        for item in info_list:
+              sum_time=sum_time+(item.end_time-item.start_time)
+        print(round(sum_time.seconds/3600, 1))
+        return  render(request,'total.html',locals())
+    # else:
+    #     return render(request, 'page-login.html', {'error_msg': ''})
+
 # 登录页面
 @csrf_exempt
 def login(request):
@@ -83,25 +101,37 @@ def register(request):
 
 def check(request):
     (flag, rank) = check_cookie(request)
-    print('flag', flag)
+    # print('flag', flag)
     user=rank
 
     if flag:
         if request.method=='POST':
-
-            pass
+            sign_flag=request.POST.get('sign')
+            print('sign_flag',type(sign_flag),sign_flag)
+            if sign_flag=='True':
+                Attendence.objects.create(stu=user,start_time=datetime.datetime.now())
+            elif sign_flag=='False':
+                Attendence.objects.filter(stu=user,end_time=None).update(end_time=datetime.datetime.now())
+            return HttpResponse(request,'操作成功')
         else:
             # 查询上一个签到的状态
-            pre_att=Attendence.objects.filter(stu=user).order_by('cur_time').last()
+            pre_att=Attendence.objects.filter(stu=user).order_by('id').last()
+            # print(pre_att.end_time)
             if pre_att:
-                if (datetime.now()-pre_att.cur_time.replace(tzinfo=None)).seconds/3600>6:
-                    Attendence.objects.create(stu=user,state=False)
+                # 如果当前时间距上次签到时间超过六小时，并且上次签退时间等于签到时间
+                if (datetime.datetime.now()-pre_att.start_time.replace(tzinfo=None)).seconds/3600>6 and pre_att.end_time==None:
+                    Attendence.objects.filter(stu=user, end_time=None).update(end_time=pre_att.start_time+datetime.timedelta(hours=2),detail="自动签退")
+                    # pre_att.delete()
                     sign_flag=False
+
+
+                elif (datetime.datetime.now()-pre_att.start_time.replace(tzinfo=None)).seconds/3600<6 and pre_att.end_time==None :
+                    sign_flag = False
                 else:
-                    sign_flag = not pre_att.state
+                    sign_flag=True
             else:
                 sign_flag=True
-            att_list=Attendence.objects.all()
+            att_list=Attendence.objects.all().order_by('-id')
 
             return render(request, 'check.html',locals())
 
