@@ -1,12 +1,12 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .forms import loginForm
 from django.contrib.auth import authenticate, login
-from .api import check_cookie,check_login, get_all_major, get_all_class, get_all_type,is_login
+from .api import check_cookie,check_login, get_all_major,DecimalEncoder, get_all_class, get_all_type,is_login
 from .models import MajorInfo, UserType, UserInfo, ClassInfo,Attendence
 # django自带加密解密库
 from django.views.decorators.csrf import csrf_exempt
-from  django.db.models import F,Q,Avg,Sum,Max,Min
-
+from  django.db.models import F,Q,Avg,Sum,Max,Min,Count
+import json
 import hashlib
 import json
 import datetime
@@ -42,14 +42,23 @@ def total(request):
     (flag, user) = check_cookie(request)
     # if flag:
     if request.method=='POST':
-        pass
+        nowdate=datetime.datetime.now()
+        weekDay=datetime.datetime.weekday(nowdate)
+        firstDay=nowdate-datetime.timedelta(days=weekDay)
+        lastDay=nowdate+datetime.timedelta(days=6-weekDay)
+        # print(firstDay,lastDay)
+        info_list=Attendence.objects.filter(date__gte=firstDay,date__lte=lastDay).values('stu','stu__username','stu__cid__name').annotate(total_time=Sum('duration'),leave_count=Sum('is_leave')).order_by()
+        info_list=json.dumps(list(info_list),cls=DecimalEncoder)
+        return HttpResponse(info_list)
     else:
-
-        info_list=Attendence.objects.all()
-        sum_time=datetime.timedelta(hours=0)
-        for item in info_list:
-              sum_time=sum_time+(item.end_time-item.start_time)
-        print(round(sum_time.seconds/3600, 1))
+        nowdate=datetime.datetime.now()
+        weekDay=datetime.datetime.weekday(nowdate)
+        firstDay=nowdate-datetime.timedelta(days=weekDay)
+        lastDay=nowdate+datetime.timedelta(days=6-weekDay)
+        # print(firstDay,lastDay)
+        info_list=Attendence.objects.filter(date__gte=firstDay,date__lte=lastDay).values('stu','stu__username','stu__cid__name').annotate(total_time=Sum('duration'),leave_count=Sum('is_leave')).order_by()
+        # info_list=json.dumps(list(info_list),cls=DecimalEncoder)
+        # print(info_list)
         return  render(request,'total.html',locals())
     # else:
     #     return render(request, 'page-login.html', {'error_msg': ''})
@@ -111,7 +120,11 @@ def check(request):
             if sign_flag=='True':
                 Attendence.objects.create(stu=user,start_time=datetime.datetime.now())
             elif sign_flag=='False':
-                Attendence.objects.filter(stu=user,end_time=None).update(end_time=datetime.datetime.now())
+                cur_attendent=Attendence.objects.filter(stu=user,end_time=None)
+                tmp_time=datetime.datetime.now()
+                duration=round((tmp_time-cur_attendent.last().start_time).seconds/3600,1)
+
+                cur_attendent.update(end_time=tmp_time,duration=duration)
             return HttpResponse(request,'操作成功')
         else:
             # 查询上一个签到的状态
@@ -120,7 +133,7 @@ def check(request):
             if pre_att:
                 # 如果当前时间距上次签到时间超过六小时，并且上次签退时间等于签到时间
                 if (datetime.datetime.now()-pre_att.start_time.replace(tzinfo=None)).seconds/3600>6 and pre_att.end_time==None:
-                    Attendence.objects.filter(stu=user, end_time=None).update(end_time=pre_att.start_time+datetime.timedelta(hours=2),detail="自动签退")
+                    Attendence.objects.filter(stu=user, end_time=None).update(end_time=pre_att.start_time+datetime.timedelta(hours=2),duration=2,detail="自动签退")
                     # pre_att.delete()
                     sign_flag=False
 

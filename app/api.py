@@ -1,6 +1,8 @@
 from .models import UserInfo,MajorInfo,ClassInfo,UserType
 from functools import wraps
 from django.shortcuts import render
+import json
+import decimal
 def check_cookie(request):
     d = request.COOKIES.keys()
     if "qwer" in d and "asdf" in d:
@@ -42,3 +44,9 @@ def get_all_class():
 
 def get_all_type():
     return  UserType.objects.all()
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj,decimal.Decimal):
+            return float(obj)
+        return super(DecimalEncoder,self).default(obj)

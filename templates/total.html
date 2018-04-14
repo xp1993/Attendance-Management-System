@@ -45,6 +45,12 @@
         </div>
     </div>
 
+    <script src="https://cdn.bootcss.com/echarts/4.0.4/echarts-en.common.min.js"></script>
+    <div class="row">
+        <div class="col-md-12" id="mainchart" style="height:400px ">
+        </div>
+
+    </div>
 
     <!--面板开始-->
     <div class="panel panel-primary">
@@ -77,22 +83,78 @@
 
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>1001</td>
-                        <td>2015221455</td>
-                        <td>傻秋</td>
-                        <td>计科141</td>
-                        <td>250</td>
-                        <td>250</td>
+                    <tbody id="time_detail">
+                    {% for info in info_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ info.stu }}</td>
+                            <td>{{ info.stu__username }}</td>
+                            <td>{{ info.stu__cid__name }}</td>
+                            <td>{{ info.total_time|floatformat:'1' }}</td>
+                            <td>{{ info.leave_count|floatformat }}</td>
 
-                    </tr>
+                        </tr>
+                    {% endfor %}
 
                     </tbody>
                 </table>
             </div>
             <!--数据表结束-->
+            <script>
+                $(document).ready(function () {
+                    {#数据展示#}
+                    (function () {
+                        $.post('/total/', {"flag": "ok"}, function (ret) {
+                            data = $.parseJSON(ret)
+                            console.log(data)
+                            $('#time_detail').empty()
+                            {#姓名数组#}
+                            var names=[];
+                            {#时间数组#}
+                            var times=[];
+                            for (var i = 0; i < data.length; i++) {
+                                s = "<tr><td>" + i + "</td><td>" + data[i].stu + "</td><td>" + data[i].stu__username + "</td><td>" +
+                                    data[i].stu__cid__name + "</td><td>" +
+                                    data[i].total_time + "</td><td>" +
+                                    Number(data[i].leave_count) + "</td></tr>";
+                                $('#time_detail').append(s)
+                                names.push(data[i].stu__username)
+                                times.push(data[i].total_time)
 
+                            }
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById('mainchart'));
+
+                            // 指定图表的配置项和数据
+                            var option = {
+                                title: {
+                                    text: '签到数据统计'
+                                },
+                                tooltip: {},
+                                legend: {
+                                    data: ['签到统计']
+                                },
+                                xAxis: {
+                                    data: names
+                                },
+                                yAxis: {},
+                                series: [{
+                                    name: '时间',
+                                    type: 'bar',
+                                    data: times
+                                }]
+                            };
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+
+                        })
+                    })()
+                })
+                $.ajaxSetup({
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                });
+            </script>
             <!--面板底部开始-->
             <div class="panel-footer">
                 <!--分页-->

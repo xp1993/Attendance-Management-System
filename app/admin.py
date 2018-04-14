@@ -18,7 +18,7 @@ class MajorInfoAdmin(admin.ModelAdmin):
     list_display = ['id','name',]
 
 class AttendenceAdmin(admin.ModelAdmin):
-    list_display = ['id','stu','date','start_time','end_time','is_leave','detail']
+    list_display = ['id','stu','date','start_time','end_time','is_leave','duration','detail']
 admin.site.register(UserType,UserTypeAdmin)
 admin.site.register(UserInfo,UserInfoAdmin)
 admin.site.register(ClassInfo,ClassInfoAdmin)
