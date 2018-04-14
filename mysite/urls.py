@@ -38,5 +38,7 @@ urlpatterns = [
     url(r'^edit_member',views.edit_member),
     url(r'^total',views.total),
     url(r'^sign_solve/',views.total),
+    url(r'^notice/',views.notice),
+    url(r'^noticeManage/',views.noticeManage),
 
 ]

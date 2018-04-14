@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from .forms import loginForm
 from django.contrib.auth import authenticate, login
 from .api import check_cookie,check_login, get_all_major,DecimalEncoder, get_all_class, get_all_type,is_login
-from .models import MajorInfo, UserType, UserInfo, ClassInfo,Attendence
+from .models import MajorInfo, UserType, UserInfo, ClassInfo,Attendence,Notice
 # django自带加密解密库
 from django.views.decorators.csrf import csrf_exempt
 from  django.db.models import F,Q,Avg,Sum,Max,Min,Count
@@ -397,3 +397,28 @@ def edit_member(request):
             return render(request, 'member_manage_denied.html')
     else:
         return render(request, 'page-login.html', {'error_msg': ''})
+
+# 公告墙展示
+@is_login
+def notice(request):
+    info_list=Notice.objects.all().order_by('-post_date')
+    return render(request,'notice.html',locals())
+
+#公告墙发布
+@is_login
+def noticeManage(request):
+    (flag, user) = check_cookie(request)
+    if user.user_type.caption=='admin':
+        if request.method=='POST':
+            title=request.POST.get('title')
+            content=request.POST.get('content')
+            level=request.POST.get('selectLevel')
+            Notice.objects.create(head=title,content=content,level=level,author=user)
+            return render(request, 'notice_manage.html')
+        else:
+            return render(request,'notice_manage.html')
+    else:
+        return render(request,'notice_manage_denied.html')
+
+
+

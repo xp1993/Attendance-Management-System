@@ -57,3 +57,9 @@ class Attendence(models.Model):
     detail = models.TextField(default='无')
     def __str__(self):
         return self.stu.username
+class Notice(models.Model):
+    author=models.ForeignKey('UserInfo')
+    post_date=models.DateTimeField(auto_now=True)
+    head=models.TextField(max_length=200)
+    content=models.TextField(max_length=500)
+    level=models.IntegerField(default=0)

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="alert alert-success" role="alert">管理认证成功</div>
+    <div class="panel panel-info">
+        <div class="panel-heading">公告管理</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="/noticeManage/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="inputTitle" class="col-sm-2 control-label">公告标题</label>
+                    <div class="col-sm-10">
+                        <input name="title" type="text" class="form-control" id="inputTitle" placeholder="公告标题">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputContent" class="col-sm-2 control-label">公告内容</label>
+                    <div class="col-sm-10">
+                        <textarea rows="10" name="content" class="form-control" id="inputContent">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="selectLevel" class="col-sm-2 control-label">级别</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="selectLevel">
+                            <option value="0">一般</option>
+                            <option value="1">重要</option>
+                            <option value="2">非常重要</option>
+                            <option value="3">紧急</option>
+
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">发布</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+{% endblock content %}
+{% block sidebar %}
+    3
+{% endblock sidebar %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserInfo,UserType,ClassInfo,MajorInfo,Attendence
+from .models import UserInfo,UserType,ClassInfo,MajorInfo,Attendence,Notice
 # Register your models here.
 
 class UserInfoAdmin(admin.ModelAdmin):
@@ -19,8 +19,12 @@ class MajorInfoAdmin(admin.ModelAdmin):
 
 class AttendenceAdmin(admin.ModelAdmin):
     list_display = ['id','stu','date','start_time','end_time','is_leave','duration','detail']
+
+class NoticeAdmin(admin.ModelAdmin):
+    list_display = ['id','author','head','content','level']
 admin.site.register(UserType,UserTypeAdmin)
 admin.site.register(UserInfo,UserInfoAdmin)
 admin.site.register(ClassInfo,ClassInfoAdmin)
 admin.site.register(MajorInfo,MajorInfoAdmin)
 admin.site.register(Attendence,AttendenceAdmin)
+admin.site.register(Notice,NoticeAdmin)
