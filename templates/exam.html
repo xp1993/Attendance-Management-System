@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">考核评定记录</div>
+        <div class="panel-body">
+            {% if user_list %}
+                {% for item in user_list %}
+                    <div class="row bg-info">
+                        <div class="col-sm-3">{{ item.user.username }}</div>
+                        <div class="col-sm-3">{{ item.content.title }}</div>
+
+                        <div class="col-sm-3">{{ item.point }}</div>
+                        <div class="col-sm-3">{{ item.detail }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for item in exam_list %}
+                    <a href="/exam/?exam_id={{ item.id }}">
+                        <div class="alert alert-info" role="alert">
+                            {{ item.title }} <span class="pull-right">{{ item.date }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block sidebar %}
+    4
+{% endblock sidebar %}

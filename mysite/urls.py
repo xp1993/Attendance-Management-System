@@ -40,5 +40,7 @@ urlpatterns = [
     url(r'^sign_solve/',views.total),
     url(r'^notice/',views.notice),
     url(r'^noticeManage/',views.noticeManage),
-
+    url(r'^leave/',views.leave),
+    url(r'^exam/',views.exam),
+    url(r'^exam_manage/',views.exam_manage),
 ]

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="alert alert-success" role="alert">管理认证成功</div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">考核发布</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="/exam_manage/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="inputTitle" class="col-sm-2 control-label">考核主题</label>
+                    <div class="col-sm-10">
+                        <input name="title" type="text" class="form-control" id="inputTitle" placeholder="考核标题">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">发布</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">考核批阅
+            <small class="pull-right">针对未批阅的考核进行操作，已批阅的考核将不再显示</small>
+        </div>
+        <div class="panel-body">
+            {% for item in check_list %}
+
+                <form class="form-horizontal" action="/exam_manage/" method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <div class="col-sm-10 hide">
+                            <input name="exam_id" value="{{ item.id }}" type="text" class="form-control"
+                                   placeholder="考核ID">
+                        </div>
+                    </div>
+                    <div class="page-header">
+                        <h1>考核内容：
+                            <small>{{ item.title }} </small>
+                        </h1>
+                        <small class="pull-right">{{ item.date }}</small>
+                    </div>
+
+                    {% for user in user_list %}
+                        <div class="row">
+                            <div class="form-group col-sm-5">
+                                <label for="inputTitle" class="col-sm-2 control-label">{{ user.username }}</label>
+                                <div class="col-sm-10">
+                                    <input name="point{{ forloop.counter0 }}" type="text" class="form-control"
+                                           id="inputTitle"
+                                           placeholder="考核成绩">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label for="inputTitle" class="col-sm-2 control-label">评语</label>
+                                <div class="col-sm-10">
+                                    <input name="detail{{ forloop.counter0 }}" type="text" class="form-control"
+                                           id="inputTitle"
+                                           placeholder="评语">
+                                </div>
+                            </div>
+                            <div class="form-group hide">
+                                <label for="inputTitle" class="col-sm-2 control-label">评语</label>
+                                <div class="col-sm-10">
+                                    <input name="stu{{ forloop.counter0 }}" type="text" class="form-control"
+                                           id="inputTitle"
+                                           value="{{ user.studentNum}}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-success">完成批阅</button>
+                        </div>
+                    </div>
+                </form>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block sidebar %}
+    5
+{% endblock sidebar %}

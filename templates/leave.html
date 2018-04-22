@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment-with-locales.min.js"></script>
+    <div class="panel panel-info">
+        <div class="panel-heading">请假管理</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="/leave/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="datetimepicker1" class="col-sm-2 control-label">选择日期：</label>
+                    <!--指定 date标记-->
+                    <div class='input-group col-sm-8 date ' id='datetimepicker1'>
+                        <input type='text' class="form-control" name="starttime"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="datetimepicker2" class="col-sm-2 control-label">结束时间：</label>
+                    <!--指定 date标记-->
+                    <div class='input-group date col-sm-8' id='datetimepicker2'>
+                        <input type='text' class="form-control" name="endtime"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputContent" class="col-sm-2 control-label">请假原因:</label>
+                    <div class="col-sm-8">
+                        <textarea rows="10" name="explain" class="form-control" id="inputContent">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <button type="submit" class="btn btn-success">发布</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            $('#datetimepicker2').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+        })
+    </script>
+<div class="panel panel-info">
+    <div class="panel-heading">请假记录</div>
+    <div class="panel-body">
+        {% for item in leave_list %}
+        <div class="alert alert-success" role="alert">
+            {{ item.user.username }}&nbsp;&nbsp;{{ item.start_time }}&nbsp;&nbsp;{{ item.end_time }}&nbsp;&nbsp;{{ item.explain }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+{% block sidebar %}
+    6
+{% endblock sidebar %}
